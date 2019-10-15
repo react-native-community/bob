@@ -1,0 +1,87 @@
+{
+  "name": "{{package-name}}",
+  "version": "0.0.1",
+  "description": "{{package-description}}",
+  "main": "lib/commonjs/index.js",
+  "react-native": "src/index.tsx",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/src/index.d.ts",
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "test": "jest",
+    "typescript": "tsc --noEmit",
+    "lint": "eslint --ext .js,.ts,.tsx .",
+    "release": "release-it",
+    "example": "yarn --cwd example",
+    "bootstrap": "yarn example && yarn",
+    "prepare": "bob build"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "react-native-component",
+    "react-component",
+    "react-native",
+    "ios",
+    "android"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/{{github-org}}/{{github-repo}}.git"
+  },
+  "author": "{{author-name}} <{{author-email}}> (https://github.com/{{author-github}}/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/{{github-org}}/{{github-repo}}/issues"
+  },
+  "homepage": "https://github.com/{{github-org}}/{{github-repo}}#readme",
+  "devDependencies": {
+    "@commitlint/config-conventional": "^8.2.0",
+    "@react-native-community/eslint-config": "0.0.5",
+    "@react-native-community/bob": "^0.7.0",
+    "@release-it/conventional-changelog": "^1.1.0",
+    "@types/react": "^16.9.5",
+    "@types/react-native": "^0.60.18",
+    "babel-jest": "^24.9.0",
+    "babel-preset-react-native": "^4.0.0",
+    "commitlint": "^8.2.0",
+    "eslint": "^6.5.1",
+    "husky": "^3.0.8",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "react": "~16.8.3",
+    "react-native": "~0.59.10",
+    "release-it": "^12.4.2",
+    "typescript": "^3.6.3"
+  },
+  "peerDependencies": {
+    "react": "*",
+    "react-native": "*"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "yarn lint && yarn typescript"
+    }
+  },
+  "jest": {
+    "preset": "react-native",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules",
+      "<rootDir>/lib/"
+    ]
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      "typescript"
+    ]
+  }
+}

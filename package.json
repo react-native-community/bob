@@ -11,7 +11,8 @@
   },
   "files": [
     "bin",
-    "lib"
+    "lib",
+    "templates"
   ],
   "publishConfig": {
     "access": "public",
