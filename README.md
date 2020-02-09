@@ -15,6 +15,8 @@ If you want to create your own React Native module, scaffolding the project can 
 - Bob pre-configured to compile your files
 - CircleCI pre-configured to run tests on the CI
 
+<img src="assets/bob-create.gif" style="height: auto; width: 480px; max-width: 100%">
+
 ### Build your projects
 
 Bob can build code for following targets:
