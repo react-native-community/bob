@@ -63,6 +63,32 @@ const SWIFT_FILES = (moduleType: ModuleType) => {
   }
 };
 
+// Windows Csharp
+const WINDOWS_CSHARP_FILES = (moduleType: ModuleType) => {
+  switch (moduleType) {
+    case 'module':
+      return path.resolve(__dirname, '../templates/windows-uwp-csharp-library');
+    case 'view':
+      return path.resolve(
+        __dirname,
+        '../templates/windows-uwp-csharp-view-library'
+      );
+  }
+};
+
+// Windows Cpp
+const WINDOWS_CPP_FILES = (moduleType: ModuleType) => {
+  switch (moduleType) {
+    case 'module':
+      return path.resolve(__dirname, '../templates/windows-uwp-cpp-library');
+    case 'view':
+      return path.resolve(
+        __dirname,
+        '../templates/windows-uwp-cpp-view-library'
+      );
+  }
+};
+
 type ArgName =
   | 'slug'
   | 'description'
@@ -89,6 +115,8 @@ type Answers = {
     | 'kotlin-objc'
     | 'kotlin-swift'
     | 'cpp'
+    | 'windows-uwp-cpp'
+    | 'windows-uwp-csharp'
     | 'js';
   type?: 'module' | 'view';
   example?: 'expo' | 'native';
@@ -256,13 +284,20 @@ async function create(argv: yargs.Arguments<any>) {
         { title: 'Kotlin & Swift', value: 'kotlin-swift' },
         { title: 'C++ for both iOS & Android', value: 'cpp' },
         { title: 'JavaScript only', value: 'js' },
+        { title: 'Windows UWP with C++', value: 'windows-uwp-cpp' },
+        { title: 'Windows UWP with C#', value: 'windows-uwp-csharp' },
       ],
     },
     'type': {
       type: (prev: string) =>
-        ['java-objc', 'java-swift', 'kotlin-objc', 'kotlin-swift'].includes(
-          prev
-        )
+        [
+          'java-objc',
+          'java-swift',
+          'kotlin-objc',
+          'kotlin-swift',
+          'windows-uwp-cpp',
+          'windows-uwp-csharp',
+        ].includes(prev)
           ? 'select'
           : null,
       name: 'type',
@@ -356,6 +391,8 @@ async function create(argv: yargs.Arguments<any>) {
       cpp: languages === 'cpp',
       kotlin: languages === 'kotlin-objc' || languages === 'kotlin-swift',
       swift: languages === 'java-swift' || languages === 'kotlin-swift',
+      windows:
+        languages === 'windows-uwp-cpp' || languages === 'windows-uwp-csharp',
       module: languages !== 'js',
       moduleType: type,
     },
@@ -419,6 +456,14 @@ async function create(argv: yargs.Arguments<any>) {
 
     if (options.project.cpp) {
       await copyDir(CPP_FILES, folder);
+    }
+
+    if (options.project.windows) {
+      const WINDOWS_FILES =
+        languages === 'windows-uwp-csharp'
+          ? WINDOWS_CSHARP_FILES
+          : WINDOWS_CPP_FILES;
+      await copyDir(WINDOWS_FILES(type), folder);
     }
 
     if (options.project.swift) {
